@@ -23,3 +23,7 @@ def bSearchSortedList(sorted_list: list[int], target: int) -> int:
             left = mid + 1
 
     return left if (left < len(sorted_list) and sorted_list[left] == target) else -(left + 1)
+
+nums: list[int] = [-1, -1, 0, 2, 3]
+print(bSearchSortedList(nums, -1))
+print(bSearchSortedList(nums, 1))
