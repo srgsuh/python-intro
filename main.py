@@ -12,14 +12,14 @@ def bSearchSortedList(sorted_list: list[int], target: int) -> int:
     Returns:
         int: the index of the first occurrence of the target if found, otherwise -(insert_index + 1).
     """
-    left: int = 0
+    left: int = -1
     right: int = len(sorted_list)
 
-    while left < right:
+    while (right - left) > 1:
         mid: int = left + (right - left) // 2
         if (sorted_list[mid] >= target):
             right = mid
         else:
-            left = mid + 1
-    
-    return left if (left < len(sorted_list) and sorted_list[left] == target) else -(left + 1)
+            left = mid
+
+    return right if (right < len(sorted_list) and sorted_list[right] == target) else -(right + 1)
