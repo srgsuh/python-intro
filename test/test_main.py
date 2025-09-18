@@ -6,6 +6,9 @@ nums: list[int] = [10, 10, 10, 20, 30, 30, 40, 50, 60, 70, 80, 90, 90, 90, 90]
 def test_bSearchSortedList_found_10():
     assert bSearchSortedList(nums, 10) == 0
 
+def test_bSearchSortedList_found_20():
+    assert bSearchSortedList(nums, 20) == 3
+
 def test_bSearchSortedList_found_30():
     assert bSearchSortedList(nums, 30) == 4
     
