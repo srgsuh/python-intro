@@ -13,8 +13,3 @@ def bSearchSortedList(lst: list[int], target: int) -> int:
             left = mid + 1
     
     return -1
-
-
-nums: list[int] = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-print(bSearchSortedList(nums, 70))
-print(bSearchSortedList(nums, 25))
