@@ -7,14 +7,14 @@ def bSearchSortedList(sorted_list: list[int], target: int) -> int:
     """
     n: int = len(sorted_list)
     left: int = 0
-    right: int = n - 1
+    right: int = n
 
-    while left <= right:
+    while left < right:
         mid: int = left + (right - left) // 2
-        if (sorted_list[mid] >= target):
-            right = mid - 1
-        else:
+        if (sorted_list[mid] < target):
             left = mid + 1
+        else:
+            right = mid
 
     return left if (left < n and sorted_list[left] == target) else -(left + 1)
 
