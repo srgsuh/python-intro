@@ -23,3 +23,18 @@ def test_bSearchSortedList_not_found_43():
 
 def test_bSearchSortedList_not_found_99():
     assert bSearchSortedList(nums, 99) == -16
+    
+def test_bSearchSortedList_ten_zeroes_0():
+    assert bSearchSortedList([0,0,0,0,0,0,0,0,0,0], 0) == 0
+    
+def test_bSearchSortedList_ten_zeroes_one():
+    assert bSearchSortedList([0,0,0,0,0,0,0,0,0,0], 1) == -11
+
+def test_bSearchSortedList_ten_zeroes_minus_one():
+    assert bSearchSortedList([0,0,0,0,0,0,0,0,0,0], -1) == -1
+    
+def test_bSearchSortedList_012_one():
+    assert bSearchSortedList([0,1,2], 1) == 1
+
+def test_bSearchSortedList_012_two():
+    assert bSearchSortedList([0,1,2], 2) == 2
