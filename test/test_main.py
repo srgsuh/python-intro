@@ -88,7 +88,13 @@ class MaxNegativeReprTest(unittest.TestCase):
         
     def test_neg_no_positive(self):
         self.assertEqual(maxNegativeRepr([-1, -2, -100, 0, -8]), -1)
+    
+    def test_neg_no_match_mixed(self):
+        self.assertEqual(maxNegativeRepr([100, 4, 1, 1, 4, 100, 1, -2, -99]), -1)
         
+    def test_pos_small_match(self):
+        self.assertEqual(maxNegativeRepr([100, 4, 1, 1, 4, 100, -1]), 1)
+            
     def test_pos_zeroes_and_pair(self):
         self.assertEqual(maxNegativeRepr([0, -1, 0, 0, 0, 0, 1, 0]), 1)
     
