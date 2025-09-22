@@ -57,6 +57,15 @@ class IsSumTwoTest(unittest.TestCase):
     
     def test_zero_with_one_zero_in_array(self):
         self.assertFalse(isSumTwo([-1, 0, 5, 2], 0))
+        
+    def test_two_elements_sum(self):
+        self.assertTrue(isSumTwo([4, 5], 9))
+        
+    def test_two_identical_elements_sum(self):
+        self.assertTrue(isSumTwo([-4, -4], -8))
+    
+    def test_two_elements_no_sum(self):
+        self.assertFalse(isSumTwo([4, 5], 8))
     
     def test_one_element(self):
         self.assertFalse(isSumTwo([2], 2))
@@ -65,6 +74,12 @@ class IsSumTwoTest(unittest.TestCase):
         self.assertFalse(isSumTwo([], 0))
 
 class MaxNegativeReprTest(unittest.TestCase):
+    def test_neg_one_element(self):
+        self.assertEqual(maxNegativeRepr([100]), -1)
+        
+    def test_neg_empty(self):
+        self.assertEqual(maxNegativeRepr([]), -1)
+    
     def test_neg_all_zeroes(self):
         self.assertEqual(maxNegativeRepr([0, 0, 0, 0, 0]), -1)
     
@@ -73,6 +88,9 @@ class MaxNegativeReprTest(unittest.TestCase):
         
     def test_neg_no_positive(self):
         self.assertEqual(maxNegativeRepr([-1, -2, -100, 0, -8]), -1)
+        
+    def test_pos_zeroes_and_pair(self):
+        self.assertEqual(maxNegativeRepr([0, -1, 0, 0, 0, 0, 1, 0]), 1)
     
     def test_pos_with_positive_after(self):
         self.assertEqual(maxNegativeRepr([-1, -2, -100, 0, 100, 1]), 100)
@@ -86,8 +104,18 @@ class MaxNegativeReprTest(unittest.TestCase):
     def test_pos_with_negative_after_as_last_entry(self):
         self.assertEqual(maxNegativeRepr([-1, -2, 100, 0, -100]), 100)
         
+    def test_pos_largest_pair_first(self):
+        self.assertEqual(maxNegativeRepr([100, -100, 1, -1]), 100)
+        
     def test_pos_with_several_options(self):
-        self.assertEqual(maxNegativeRepr([-1, -2, 0, 1, 2, 2]), 2)
+        self.assertEqual(maxNegativeRepr([-1, -2, 0, 100, 1, 2, 3, -3, -100]), 100)
+    
+    def test_pos_two_elements(self):
+        self.assertEqual(maxNegativeRepr([-2, 2]), 2)
 
+    def test_pos_repeat_the_same_pair(self):
+        self.assertEqual(maxNegativeRepr([-2, 2, 2, -2, -2, 2, 2, -2]), 2)
+    
+        
 if __name__ == '__main__':
     unittest.main()
