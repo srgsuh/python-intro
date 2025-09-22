@@ -18,32 +18,35 @@ def bSearchSortedList(sorted_list: list[int], target: int) -> int:
 
     return left if (left < n and sorted_list[left] == target) else -(left + 1)
 
-def isSumTwo(nums: list[int], target: int) -> bool:
-    addSet = set()
+def isSumTwo(numbers: list[int], sum: int) -> bool:
+    passedNumbers = set()
     isFound: bool = False
     
-    for v in nums:
-        if (target - v) in addSet:
+    for v in numbers:
+        if (sum - v) in passedNumbers:
             isFound = True
             break
-        addSet.add(v)
+        passedNumbers.add(v)
     
     return isFound
 
-def maxNegativeRepr(nums: list[int]) -> int:
+def maxNegativeRepr(numbers: list[int]) -> int:
     maxValue: int = -1
-    passed = set()
+    passedNumbers = set()
     
-    for v in nums:
+    for v in numbers:
         if v != 0:
-            if abs(v) > maxValue and -v in passed:
+            if abs(v) > maxValue and -v in passedNumbers:
                 maxValue = abs(v)
-            passed.add(v)
+            passedNumbers.add(v)
     
     return maxValue
             
 
 if __name__ == '__main__':
-    nums: list[int] = [-1, -1, 0, 2, 3]
+    nums: list[int] = [-3, -3, -1, -1, 0, 2, 3]
     print(bSearchSortedList(nums, -1))
     print(bSearchSortedList(nums, 1))
+    print(isSumTwo(nums, 1))
+    print(isSumTwo(nums, 4))
+    print(maxNegativeRepr(nums))
