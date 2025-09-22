@@ -31,38 +31,63 @@ class BinarySearchTest(unittest.TestCase):
         self.assertEqual(bSearchSortedList([], 1), -1)
 
 class IsSumTwoTest(unittest.TestCase):
-    def test_isSumTwo_sum_of_two_inner(self):
+    def test_sum_of_two_inner(self):
         self.assertTrue(isSumTwo([1, 2, 1, 3, 0], 5))
         
-    def test_isSumTwo_sum_of_two_inner_negatives(self):
+    def test_sum_of_two_inner_negatives(self):
         self.assertTrue(isSumTwo([-1, -2, -1, -3, 0], -5))
     
-    def test_isSumTwo_no_sum_target_not_in_array(self):
+    def test_no_sum_target_not_in_array(self):
         self.assertFalse(isSumTwo([1, 2, 3, 4], 9))
     
-    def test_isSumTwo_no_sum_target_in_array(self):
+    def test_no_sum_target_in_array(self):
         self.assertFalse(isSumTwo([1, 2, 3, 4], 2))
         
-    def test_isSumTwo_no_sum_target_in_array_negative(self):
+    def test_no_sum_target_in_array_negative(self):
         self.assertFalse(isSumTwo([-1, -2, -3, -4], -2))
         
-    def test_isSumTwo_as_sum_of_two_last_entries(self):
+    def test_as_sum_of_two_last_entries(self):
         self.assertTrue(isSumTwo([1, 2, 3, 4], 7))
     
-    def test_isSumTwo_zero_as_sum_of_two_non_zeroes(self):
+    def test_zero_as_sum_of_two_non_zeroes(self):
         self.assertTrue(isSumTwo([-1, 0, 5, 1], 0))
         
-    def test_isSumTwo_zero_as_sum_of_two_zeroes(self):
+    def test_zero_as_sum_of_two_zeroes(self):
         self.assertTrue(isSumTwo([-1, 0, 5, 0], 0))
     
-    def test_isSumTwo_zero_with_one_zero_in_array(self):
+    def test_zero_with_one_zero_in_array(self):
         self.assertFalse(isSumTwo([-1, 0, 5, 2], 0))
     
-    def test_isSumTwo_one_element(self):
+    def test_one_element(self):
         self.assertFalse(isSumTwo([2], 2))
         
-    def test_isSumTwo_empty(self):
+    def test_empty(self):
         self.assertFalse(isSumTwo([], 0))
+
+class MaxNegativeReprTest(unittest.TestCase):
+    def test_neg_all_zeroes(self):
+        self.assertEqual(maxNegativeRepr([0, 0, 0, 0, 0]), -1)
+    
+    def test_neg_no_negative(self):
+        self.assertEqual(maxNegativeRepr([1, 2, 100, 0, 8]), -1)
         
+    def test_neg_no_positive(self):
+        self.assertEqual(maxNegativeRepr([-1, -2, -100, 0, -8]), -1)
+    
+    def test_pos_with_positive_after(self):
+        self.assertEqual(maxNegativeRepr([-1, -2, -100, 0, 100, 1]), 100)
+        
+    def test_pos_with_negative_after(self):
+        self.assertEqual(maxNegativeRepr([-1, -2, 100, 0, -100, 2]), 100)
+    
+    def test_pos_with_positive_after_as_last_entry(self):
+        self.assertEqual(maxNegativeRepr([-1, -2, -100, 0, 100]), 100)
+        
+    def test_pos_with_negative_after_as_last_entry(self):
+        self.assertEqual(maxNegativeRepr([-1, -2, 100, 0, -100]), 100)
+        
+    def test_pos_with_several_options(self):
+        self.assertEqual(maxNegativeRepr([-1, -2, 0, 1, 2, 2]), 2)
+
 if __name__ == '__main__':
     unittest.main()
