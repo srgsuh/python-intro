@@ -11,7 +11,7 @@ class Club:
     def __init__(self):
         self.__sorted_set: SortedSet = SortedSet()
         self.__sorted_key_list: SortedKeyList = SortedKeyList(
-                key=lambda p: (math.inf if p.age is None else p.age, p.id)
+                key=lambda p: (p.age, p.id)
         )
 
     def add_person(self, person: Person) -> None:
@@ -35,7 +35,7 @@ class Club:
         Sort the result by age and id.
         """
         left: int = self.__sorted_key_list.bisect_left(Person(-1, min_age))
-        right: int = self.__sorted_key_list.bisect_right(Person(-1, max_age + 1))
+        right: int = self.__sorted_key_list.bisect_left(Person(-1, max_age + 1))
         return list(self.__sorted_key_list[left:right])
 
 if __name__ == '__main__':
