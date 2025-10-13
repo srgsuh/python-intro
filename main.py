@@ -38,17 +38,22 @@ class MyDict(Generic[K, V]):
     def __len__(self):
         # returns count of the entries
         # this is a magic method allowing using the function len of Python
-        raise NotImplementedError()
+        return len(self.__entries)
+
     def setdefault(self, key: K, default: V = None):
         # TODO: If key missing, insert key: default; return the default.
         #    If key exists, no insert, no update; return the value
-        raise NotImplementedError()
+        entry: Entry[K, V] = self.__getEntryByKey(key)
+        if not entry:
+            self.__setitem__(key, default)
+        return entry.value if entry else default
     
     def get(self, key: K, default: V = None):
         # TODO returns value for key or any default if key missing
-        raise NotImplementedError()
+        entry: Entry[K, V] = self.__getEntryByKey(key)
+        return entry.value if entry else default
     
-    def items(self) -> list[(K,  V)]:
+    def items(self) -> list[tuple[K, V]]:
         # returns list of tuples (key, value)
         # tuple is an immutable list 
         # [1, 2] - list, (1, 2) - tuple
@@ -59,16 +64,17 @@ class MyDict(Generic[K, V]):
     
     def keys(self) -> list[K]:
         # TODO returns list of keys
-        raise NotImplementedError()
+        return [e.key for e in self.__entries]
     
     def values(self) -> list[V]:
         # TODO returns list of values
-        raise NotImplementedError()
+        return [e.value for e in self.__entries]
     
     def update(self, key: K, value: V):
         # TODO if key exists, updates value for the key
         # if key missing, inserts key: value entry
-        raise NotImplementedError()
+        self[key] = value
+
     _sentinel = object()
     def pop(self, key: K, default=_sentinel)->V:
         # TODO removes key if the key exists, return the associated value
@@ -77,7 +83,16 @@ class MyDict(Generic[K, V]):
         # Operator "is" implies the same reference. It differs from '==' (equility) 
         # if key missing and default value having been passed that value will be returned
         # if key missing and default value not passed KeyError should be raised
-        raise NotImplementedError()        
+        entry: Entry[K, V] = self.__getEntryByKey(key)
+        if entry:
+            self.__entries.discard(entry)
+            result = entry.value
+        else:
+            if default is self._sentinel:
+                raise KeyError(key)
+            result = default
+
+        return result
         
  ###########################################################################################
 class MySortedDict(Generic[K,V]):
