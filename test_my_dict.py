@@ -1,6 +1,5 @@
 import unittest as ut
 from main import MyDict
-from collections import Counter
 
 class TestMyDict(ut.TestCase):
     def setUp(self):
