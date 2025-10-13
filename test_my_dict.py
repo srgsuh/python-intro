@@ -13,5 +13,17 @@ class TestMyDict(ut.TestCase):
         self.assertEqual(3, self.myDict['c'])
         self.myDict['a'] = 10
         self.assertEqual(10, self.myDict['a'])
+    def test_len(self):
+        self.assertEqual(2, len(self.myDict))
+    def test_get(self):
+        self.assertEqual(1, self.myDict.get('a'))
+        self.assertEqual(None, self.myDict.get('c'))
+        self.assertEqual(10, self.myDict.get('c', 10))
+    def test_set_default(self):
+        self.assertEqual(1, self.myDict.setdefault('a', 10))
+        self.assertEqual(1, self.myDict['a'])
+        self.assertEqual(10, self.myDict.setdefault('c', 10))
+        self.assertEqual(10, self.myDict['c'])
+
 
 
