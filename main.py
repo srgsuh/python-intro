@@ -41,15 +41,15 @@ class MyDict(Generic[K, V]):
         return len(self.__entries)
 
     def setdefault(self, key: K, default: V = None):
-        # TODO: If key missing, insert key: default; return the default.
-        #    If key exists, no insert, no update; return the value
+        # If key missing, insert key: default; return the default.
+        # If key exists, no insert, no update; return the value
         entry: Entry[K, V] = self.__getEntryByKey(key)
         if not entry:
             self.__setitem__(key, default)
         return entry.value if entry else default
     
     def get(self, key: K, default: V = None):
-        # TODO returns value for key or any default if key missing
+        # returns value for key or any default if key missing
         entry: Entry[K, V] = self.__getEntryByKey(key)
         return entry.value if entry else default
     
@@ -63,21 +63,21 @@ class MyDict(Generic[K, V]):
        return [(e.key, e.value) for e in self.__entries]
     
     def keys(self) -> list[K]:
-        # TODO returns list of keys
+        # returns list of keys
         return [e.key for e in self.__entries]
     
     def values(self) -> list[V]:
-        # TODO returns list of values
+        # returns list of values
         return [e.value for e in self.__entries]
     
     def update(self, key: K, value: V):
-        # TODO if key exists, updates value for the key
+        # if key exists, updates value for the key
         # if key missing, inserts key: value entry
         self[key] = value
 
     _sentinel = object()
     def pop(self, key: K, default=_sentinel)->V:
-        # TODO removes key if the key exists, return the associated value
+        # removes key if the key exists, return the associated value
         # line 72 with default value is intended for differentiating optional parameter. As None may be value passed by a caller 
         # if default is _sentinel, a caller has not passed default value.
         # Operator "is" implies the same reference. It differs from '==' (equility) 
