@@ -105,7 +105,7 @@ class MySortedDict[K,V]:
         return entry if entry and entry.key == key else None
     
     def __getitem__(self, key: K) -> V :
-        # TODO see implementation of MyDict,
+        # see implementation of MyDict,
         # but it should be implemented with O[LogN] complexity
         entry: Entry[K, V] = self.__get_by_key(key)
         if not entry:
@@ -113,7 +113,7 @@ class MySortedDict[K,V]:
         return entry.value
 
     def __setitem__(self, key: K, value: V):
-        # TODO see implementation of MyDict, O[LogN] complexity
+        # see implementation of MyDict, O[LogN] complexity
         entry: Entry[K, V] = Entry(key, value)
         self.__entries.discard(entry)
         self.__entries.add(entry)
@@ -127,7 +127,7 @@ class MySortedDict[K,V]:
         return len(self.__entries)
 
     def setdefault(self, key: K, default: V = None):
-        # TODO: If key missing, insert key: default; return the default.
+        # If key missing, insert key: default; return the default.
         #    If key exists, no insert, no update; return the value
         entry: Entry[K, V] = self.__get_by_key(key)
         if not entry:
@@ -135,7 +135,7 @@ class MySortedDict[K,V]:
         return entry.value if entry else default
     
     def get(self, key: K, default: V = None):
-        # TODO returns value for key or any default if key missing
+        # returns value for key or any default if key missing
         # O[LogN] complexity
         entry: Entry[K, V] = self.__get_by_key(key)
         return entry.value if entry else default
@@ -150,21 +150,21 @@ class MySortedDict[K,V]:
        return [(e.key, e.value) for e in self.__entries]
     
     def keys(self) -> list[K]:
-        # TODO returns list of keys
+        # returns list of keys
         return [e.key for e in self.__entries]
     
     def values(self) -> list[V]:
-        # TODO returns list of values
+        # returns list of values
         return [e.value for e in self.__entries]
     
     def update(self, key: K, value: V):
-        # TODO if key exists, updates value for the key
+        # if key exists, updates value for the key
         # if key missing, inserts key: value entry
         self[key] = value
 
     _sentinel = object()
     def pop(self, key: K, default=_sentinel) -> V:
-        # TODO removes key if the key exists with returning associated value
+        # removes key if the key exists with returning associated value
         # if key missing and default exists, returns default
         entry: Entry[K, V] = self.__get_by_key(key)
         if entry:
@@ -175,15 +175,15 @@ class MySortedDict[K,V]:
         return result
 
     def bisect_left(self, key:K)->int:
-        # TODO returns first index of key that >= a given key
+        # returns first index of key that >= a given key
         return self.__entries.bisect_left(Entry(key, None))
 
     def bisect_right(self, key:K)->int:
-        # TODO returns first index of key that > a given key
+        # returns first index of key that > a given key
         return self.__entries.bisect_right(Entry(key, None))
 
     def peekitem(self, ind: int)->tuple[K,V] :
-        # TODO returns received from Entry tuple at a specified index
+        # returns received from Entry tuple at a specified index
         # may take a negative index with meaning the indexing from the end (index -1 designates the kast key
         # raises error for an index out of a possible range (index < -len(self) or index >= len(self))
         entry = self.__entries[ind]
