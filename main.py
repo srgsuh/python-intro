@@ -95,17 +95,28 @@ class MyDict(Generic[K, V]):
         return result
         
  ###########################################################################################
-class MySortedDict(Generic[K,V]):
+class MySortedDict[K,V]:
     def __init__(self) :
-        self.__entries: SortedSet[K, V] = SortedSet()       
+        self.__entries: SortedSet[K, V] = SortedSet()
+
+    def __get_by_key(self, key: K) -> Entry[K, V]:
+        index: int = self.bisect_left(key)
+        entry = self.__entries[index] if index < len(self) else None
+        return entry if entry and entry.key == key else None
     
     def __getitem__(self, key: K) -> V :
         # TODO see implementation of MyDict,
         # but it should be implemented with O[LogN] complexity
-        raise NotImplementedError()    
+        entry: Entry[K, V] = self.__get_by_key(key)
+        if not entry:
+            raise KeyError(key)
+        return entry.value
+
     def __setitem__(self, key: K, value: V):
         # TODO see implementation of MyDict, O[LogN] complexity
-        raise NotImplementedError()    
+        entry: Entry[K, V] = Entry(key, value)
+        self.__entries.discard(entry)
+        self.__entries.add(entry)
     
     def __str__(self) :
         return  '{' + ", ".join([str(e) for e in self.__entries]) + '}'
@@ -113,16 +124,21 @@ class MySortedDict(Generic[K,V]):
     def __len__(self):
         # returns count of the entries
         # this is a magic method allowing using the function len of Python
-        raise NotImplementedError()
+        return len(self.__entries)
+
     def setdefault(self, key: K, default: V = None):
         # TODO: If key missing, insert key: default; return the default.
         #    If key exists, no insert, no update; return the value
-        raise NotImplementedError()
+        entry: Entry[K, V] = self.__get_by_key(key)
+        if not entry:
+            self.__setitem__(key, default)
+        return entry.value if entry else default
     
     def get(self, key: K, default: V = None):
         # TODO returns value for key or any default if key missing
         # O[LogN] complexity
-        raise NotImplementedError()
+        entry: Entry[K, V] = self.__get_by_key(key)
+        return entry.value if entry else default
     
     def items(self) -> list[(K,  V)]:
         # returns list of tuples (key, value)
@@ -135,33 +151,43 @@ class MySortedDict(Generic[K,V]):
     
     def keys(self) -> list[K]:
         # TODO returns list of keys
-        raise NotImplementedError()
+        return [e.key for e in self.__entries]
     
     def values(self) -> list[V]:
         # TODO returns list of values
-        raise NotImplementedError()
+        return [e.value for e in self.__entries]
     
     def update(self, key: K, value: V):
         # TODO if key exists, updates value for the key
         # if key missing, inserts key: value entry
-        raise NotImplementedError()
+        self[key] = value
+
     _sentinel = object()
     def pop(self, key: K, default=_sentinel) -> V:
         # TODO removes key if the key exists with returning associated value
         # if key missing and default exists, returns default
-        
-        raise NotImplementedError() 
+        entry: Entry[K, V] = self.__get_by_key(key)
+        if entry:
+            self.__entries.discard(entry)
+        result = entry.value if entry else default
+        if result is self._sentinel:
+            raise KeyError(key)
+        return result
+
     def bisect_left(self, key:K)->int:
         # TODO returns first index of key that >= a given key
-        raise NotImplementedError()
+        return self.__entries.bisect_left(Entry(key, None))
+
     def bisect_right(self, key:K)->int:
         # TODO returns first index of key that > a given key
-        raise NotImplementedError()
+        return self.__entries.bisect_right(Entry(key, None))
+
     def peekitem(self, ind: int)->tuple[K,V] :
         # TODO returns received from Entry tuple at a specified index
         # may take a negative index with meaning the indexing from the end (index -1 designates the kast key
         # raises error for an index out of a possible range (index < -len(self) or index >= len(self))
-        raise NotImplementedError()
+        entry = self.__entries[ind]
+        return entry.key, entry.value
   ####################################################################################
   
 class DictCache(OrderedDict[K, V]) :
@@ -185,4 +211,11 @@ class DictCache(OrderedDict[K, V]) :
         
    
     
-          
+if __name__ == "__main__":
+    mySet = SortedSet()
+    mySet.add(Entry("hello", 900))
+    mySet.add(Entry("hz", 100))
+    mySet.add(Entry("haha", 10))
+    myEmptySet = SortedSet()
+    print(mySet.bisect_left(Entry("hella", None)))
+    print(myEmptySet.bisect_left(Entry("hello", None)))
