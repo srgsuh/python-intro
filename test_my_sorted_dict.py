@@ -55,6 +55,32 @@ class TestMySortedDict(ut.TestCase):
         self.assertRaises(KeyError, lambda: self.myDict['a'])
         self.assertEqual(2, self.myDict.pop('a', 2))
         self.assertRaises(KeyError, lambda: self.myDict.pop('a'))
+    def test_bisect_left(self):
+        self.assertEqual(0, self.myDict.bisect_left('a'))
+        self.assertEqual(1, self.myDict.bisect_left('b'))
+        self.assertEqual(1, self.myDict.bisect_left('aaa'))
+        self.assertEqual(2, self.myDict.bisect_left('p'))
 
+        self.assertEqual(0, self.emptyDict.bisect_left('a'))
+
+    def test_bisect_right(self):
+        self.assertEqual(1, self.myDict.bisect_right('a'))
+        self.assertEqual(2, self.myDict.bisect_right('b'))
+        self.assertEqual(1, self.myDict.bisect_right('aaa'))
+        self.assertEqual(2, self.myDict.bisect_right('p'))
+
+        self.assertEqual(0, self.emptyDict.bisect_right('a'))
+
+    def test_peek_item(self):
+        self.assertRaises(IndexError, self.emptyDict.peekitem, 0)
+        self.assertRaises(IndexError, self.emptyDict.peekitem, -1)
+
+        self.assertRaises(IndexError, self.myDict.peekitem, 100)
+        self.assertRaises(IndexError, self.myDict.peekitem, -3)
+
+        self.assertEqual(('a', 1), self.myDict.peekitem(0))
+        self.assertEqual(('b', 2), self.myDict.peekitem(1))
+        self.assertEqual(('b', 2), self.myDict.peekitem(-1))
+        self.assertEqual(('a', 1), self.myDict.peekitem(-2))
 
 
