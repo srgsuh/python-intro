@@ -31,17 +31,14 @@ class TestMySortedDict(ut.TestCase):
         self.assertEqual(10, self.myDict.setdefault('c', 10))
         self.assertEqual(10, self.myDict['c'])
     def test_keys(self):
-        my_keys: list[str] = self.myDict.keys()
-        self.assertTrue('a' in my_keys and 'b' in my_keys and len(my_keys) == 2)
-        self.assertEqual(0, len(self.emptyDict.keys()))
+        self.assertEqual(['a', 'b'], self.myDict.keys())
+        self.assertEqual([], self.emptyDict.keys())
     def test_items(self):
-        my_items: list[tuple[str, int]] = self.myDict.items()
-        self.assertTrue(('a', 1) in my_items and ('b', 2) in my_items and len(my_items) == 2)
-        self.assertEqual(0, len(self.emptyDict.items()))
+        self.assertEqual([('a', 1), ('b', 2)], self.myDict.items())
+        self.assertEqual([], self.emptyDict.items())
     def test_values(self):
-        my_values: list[int] = self.myDict.values()
-        self.assertTrue(1 in my_values and 2 in my_values and len(my_values) == 2)
-        self.assertEqual(0, len(self.emptyDict.values()))
+        self.assertEqual([1, 2], self.myDict.values())
+        self.assertEqual([], self.emptyDict.values())
     def test_update(self):
         self.myDict.update('a', 8)
         self.assertEqual(8, self.myDict['a'])
