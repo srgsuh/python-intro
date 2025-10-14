@@ -88,9 +88,10 @@ class MyDict(Generic[K, V]):
             self.__entries.discard(entry)
             result = entry.value
         else:
-            if default is self._sentinel:
-                raise KeyError(key)
             result = default
+
+        if result is self._sentinel:
+            raise KeyError(key)
 
         return result
         
@@ -194,7 +195,7 @@ class DictCache(OrderedDict[K, V]) :
     def __init__(self, maxsize=128):
         super().__init__() # calls constructor of OrderedDict that has all methods for keeping insertion order
         self.maxsize = maxsize
-    # TODO     
+    #
     # The  methods __getitem__ and __setitem__ should be overriden
     # Assumption: only following methods should be overriden for making tests from test_dict_cache.py passed
     # Hints as follows: 
@@ -213,14 +214,3 @@ class DictCache(OrderedDict[K, V]) :
         elif len(self) == self.maxsize:
             self.popitem(last=False)
         super().__setitem__(key, value)
-        
-   
-    
-if __name__ == "__main__":
-    mySet = SortedSet()
-    mySet.add(Entry("hello", 900))
-    mySet.add(Entry("hz", 100))
-    mySet.add(Entry("haha", 10))
-    myEmptySet = SortedSet()
-    print(mySet.bisect_left(Entry("hella", None)))
-    print(myEmptySet.bisect_left(Entry("hello", None)))
