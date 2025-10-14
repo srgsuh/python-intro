@@ -204,10 +204,15 @@ class DictCache(OrderedDict[K, V]) :
     # consider using self.popitem(last=False) for removing least recent (eldest item)
     
     def __getitem__(self, key):
-        raise NotImplementedError()
+        self.move_to_end(key)
+        return super().__getitem__(key)
 
     def __setitem__(self, key, value):
-        raise NotImplementedError()
+        if key in self:
+            self.move_to_end(key)
+        elif len(self) == self.maxsize:
+            self.popitem(last=False)
+        super().__setitem__(key, value)
         
    
     
