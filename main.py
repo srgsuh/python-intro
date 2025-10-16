@@ -8,15 +8,12 @@ class MyStackInt:
     def push(self, val: int) -> None:
         """Add a new element to the top of the stack"""
         self._data.append(val)
-        if not self._max or val >= self.max():
-            self._max.append(val)
+        self._max.append(max(val, self.max() if self._max else val))
     
     def pop(self) -> int:
         """Remove the top element from the stack"""
-        val = self._data.pop()
-        if val == self.max():
-            self._max.pop()
-        return val
+        self._max.pop()
+        return self._data.pop()
     
     def max(self) -> int:
         """Return the maximal element in the stack"""
