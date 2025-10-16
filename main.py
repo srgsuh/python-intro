@@ -1,20 +1,30 @@
-from dataclasses import dataclass
-from typing import Iterator
+from typing import Callable, Iterator
 
+class NumberBox:
+    #TODO constructor defining most effective data structure
+    def addNumber(self,num: int):
+        #TODO adds number
+        raise NotImplementedError()
 
-@dataclass
-class Employee:
-    id: int
-    name: str
+    def removeNumber(self,num: int)->int:
+        #TODO removes first occurrence of number and returns removed number or None if number missing
+        raise NotImplementedError()
 
-class EmployeeRepository:
-    def __init__(self, employees: list[Employee] = None):
-        self.employees = employees.copy() if employees else []
-    def __iter__(self) -> Iterator[Employee]:
-        return iter(self.employees)
+    def removeNumbersPredicate(self,pred: Callable[[int], bool])->int:
+        #TODO removes all numbers matching a given predicate
+        #predicate - function taking integer and returning True if the integer matches the predicate otherwise False
+        #returns count of the removed numbers
+        raise NotImplementedError()
 
+    def removeNumbersRange(self, min: int, max: int)->int:
+        #TODO removes all numbers that >=min and <=max
+        #returns count of removed numbers
+        raise NotImplementedError()
 
-repo = EmployeeRepository([Employee(1, "John"), Employee(2, "Jane")])
+    def __iter__(self) -> Iterator[int]:
+        #TODO code for ierating all numbers from NumberBox instance
+        raise NotImplementedError()
 
-for employee in repo:
-    print(employee)
+    def distinct(self)->int:
+        #TODO removing repeated numbers
+        raise NotImplementedError()
