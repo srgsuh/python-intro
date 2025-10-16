@@ -4,7 +4,7 @@ from sortedcontainers import SortedList
 
 def _merge_interval(intervals: list[tuple[int, int]], left: int, right: int)->None:
     if intervals and intervals[-1][1] == left:
-        intervals[-1][1] = right
+        intervals[-1] = intervals[-1][0], right
     else:
         intervals.append((left, right))
 
@@ -42,11 +42,16 @@ class NumberBox:
 
         for value in self.numbers:
             if value not in visited and pred(value):
+                visited.add(value)
                 left, right = self._value_range(value)
                 _merge_interval(intervals, left, right)
 
+        deleted = 0
         for left, right in intervals.reverse():
+            deleted += right - left
             del self.numbers[left:right]
+
+        return deleted
 
     def removeNumbersRange(self, minValue: int, maxValue: int)->int:
         """Removes all numbers from the NumberBox that are >=min and <=max. Time complexity is O(log n)"""
@@ -64,4 +69,7 @@ class NumberBox:
 
     def distinct(self)->int:
         #TODO removing repeated numbers
-        raise NotImplementedError()
+        distinct_values: set[int] = set(self.numbers)
+        size: int = len(self.numbers)
+        self.numbers = SortedList(distinct_values)
+        return size - len(self.numbers)
