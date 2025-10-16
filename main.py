@@ -32,7 +32,7 @@ class NumberBox:
         return self.numbers.bisect_left(value), self.numbers.bisect_right(value)
 
     def removeNumbersPredicate(self,pred: Callable[[int], bool])->int:
-        """Removes all numbers matching a given predicate from the NumberBox.
+        """Remove from the box all numbers matching a given predicate.
         Time complexity is O(n*log(n))"""
         #TODO removes all numbers matching a given predicate
         #predicate - function taking integer and returning True if the integer matches the predicate otherwise False
@@ -47,7 +47,7 @@ class NumberBox:
                 _merge_interval(intervals, left, right)
 
         deleted = 0
-        for left, right in intervals.reverse():
+        for left, right in reversed(intervals):
             deleted += right - left
             del self.numbers[left:right]
 
