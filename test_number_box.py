@@ -4,7 +4,7 @@ from main import NumberBox
 class TestNumberBox(ut.TestCase):
     def setUp(self):
         self.arr = [1, 1, 2, 2, 2, 3, 4, 4, 4, 5]
-        self.box = NumberBox(self.arr.reverse())
+        self.box = NumberBox(self.arr)
 
     def test_iter(self):
         self.assertEqual(sorted(self.box), self.arr)
@@ -36,7 +36,7 @@ class TestNumberBox(ut.TestCase):
         self.assertEqual(list(self.box), [])
 
     def test_remove_numbers_range_partial(self):
-        self.assertEqual(self.box.removeNumbersRange(2, 4), 3)
+        self.assertEqual(self.box.removeNumbersRange(2, 4), 7)
         self.assertEqual(sorted(self.box), [1, 1, 5])
 
     def test_remove_numbers_range_all(self):
