@@ -3,12 +3,12 @@ import math
 class MyStackInt:
     def __init__(self):
         self._data = []
-        self._max_values = [-math.inf]
+        self._max_values = []
     
     def push(self, val: int) -> None:
         """Add new element to the top of the stack"""
         self._data.append(val)
-        if val >= self._max_values[-1]:
+        if val >= (self._max_values[-1] if self.max_values else val):
             self._max_values.append(val)
     
     def pop(self) -> int:
@@ -21,13 +21,7 @@ class MyStackInt:
     
     def max(self) -> int:
         """Return the maximal element in the stack"""
-        if len(self._max_values) < 2:
-            raise IndexError()
         return self._max_values[-1]
     
 st = MyStackInt()
-st.push(1)
-st.push(2)
-print(st.max())
-st.pop()
-print(st.max())
+print(st.pop())
