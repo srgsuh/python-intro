@@ -22,6 +22,3 @@ class MyStackInt:
     def max(self) -> int:
         """Return the maximal element in the stack"""
         return self._max_values[-1]
-    
-st = MyStackInt()
-print(st.pop())
