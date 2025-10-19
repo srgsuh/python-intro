@@ -1,26 +1,27 @@
 from typing import Callable, Iterator, Iterable
 from sortedcontainers import SortedList
 
+_last_visited = object()
 
-def _merge_interval(intervals: list[tuple[int, int]], left: int, right: int)->None:
+def _merge_intervals(intervals: list[tuple[int, int]], left: int, right: int)->None:
+    """Merge a new interval into a collection of sorted intervals."""
     if intervals and intervals[-1][1] == left:
         intervals[-1] = intervals[-1][0], right
     else:
         intervals.append((left, right))
 
-
-class NumberBox:
+class NumberBox():
     #TODO constructor defining most effective data structure
     def __init__(self, iterable: Iterable[int] = None):
         self.numbers = SortedList(iterable)
 
     def addNumber(self, num: int):
-        """Add a number to the NumberBox. Time complexity is O(log n)"""
+        #Time complexity is O(log n)
         #TODO adds number
         self.numbers.add(num)
 
     def removeNumber(self,num: int)->int:
-        """Remove one occurrence of a number from the NumberBox. Time complexity is O(log n)"""
+        #ime complexity is O(log n)
         #TODO removes first occurrence of number and returns removed number or None if number missing
         value = None
         if num in self.numbers:
@@ -28,25 +29,29 @@ class NumberBox:
             value = num
         return value
 
-    def _value_range(self, value: int) -> tuple[int, int]:
-        return self.numbers.bisect_left(value), self.numbers.bisect_right(value)
+    def _index_range(self, min_value: int, max_value: int = None) -> tuple[int, int]:
+        return self.numbers.bisect_left(min_value), self.numbers.bisect_right(max_value or min_value)
+
+    def _unique_values(self) -> Iterator[int]:
+        last_visited = _last_visited
+        for value in self.numbers:
+            if value != last_visited:
+                last_visited = value
+                yield value
 
     def removeNumbersPredicate(self,pred: Callable[[int], bool])->int:
-        """Remove from the box all numbers matching a given predicate.
-        Time complexity is O(n*log(n))"""
+        #Time complexity is O(n*log(n)). Space complexity is O(n).
         #TODO removes all numbers matching a given predicate
         #predicate - function taking integer and returning True if the integer matches the predicate otherwise False
         #returns count of the removed numbers
+
         intervals: list[tuple[int, int]] = []
-        visited: set[int] = set()
+        for value in self._unique_values():
+            if pred(value):
+                left, right = self._index_range(value, value)
+                _merge_intervals(intervals, left, right)
 
-        for value in self.numbers:
-            if value not in visited and pred(value):
-                visited.add(value)
-                left, right = self._value_range(value)
-                _merge_interval(intervals, left, right)
-
-        deleted = 0
+        deleted: int = 0
         for left, right in reversed(intervals):
             deleted += right - left
             del self.numbers[left:right]
@@ -54,12 +59,11 @@ class NumberBox:
         return deleted
 
     def removeNumbersRange(self, minValue: int, maxValue: int)->int:
-        """Removes all numbers from the NumberBox that are >=min and <=max. Time complexity is O(log n)"""
+        #Time complexity is O(log n). Space complexity is O(1) (if __delitem__ does not consume memory).
         #TODO removes all numbers that >=min and <=max
         #returns count of removed numbers
-        left = self.numbers.bisect_left(minValue)
-        right = self.numbers.bisect_right(maxValue)
-        if left < right:
+        left, right = self._index_range(minValue, maxValue)
+        if left < min(right, len(self.numbers)):
             del self.numbers[left:right]
         return max(0, right - left)
 
@@ -68,8 +72,8 @@ class NumberBox:
         return iter(self.numbers)
 
     def distinct(self)->int:
+        #Time complexity is O(n * log(n)). Space complexity is O(n).
         #TODO removing repeated numbers
-        distinct_values: set[int] = set(self.numbers)
         size: int = len(self.numbers)
-        self.numbers = SortedList(distinct_values)
+        self.numbers = SortedList(dict.fromkeys(self.numbers))
         return size - len(self.numbers)
