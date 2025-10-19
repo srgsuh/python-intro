@@ -3,13 +3,6 @@ from sortedcontainers import SortedList
 
 _last_visited = object()
 
-def _merge_intervals(intervals: list[tuple[int, int]], left: int, right: int):
-    """Merge a new interval into a collection of sorted intervals."""
-    if intervals and intervals[-1][1] == left:
-        intervals[-1] = intervals[-1][0], right
-    else:
-        intervals.append((left, right))
-
 class NumberBox():
     #constructor defining most effective data structure
     def __init__(self, iterable: Iterable[int] = None):
@@ -46,18 +39,15 @@ class NumberBox():
         #returns count of the removed numbers
 
         #Time complexity is O(n*log(n)). Space complexity is O(n).
-        intervals: list[tuple[int, int]] = []
-        for value in self._unique_values():
-            if pred(value):
-                left, right = self._index_range(value)
-                _merge_intervals(intervals, left, right)
+        checked_cache: dict[int, bool] = dict()
+        def _pred_cache(x: int) -> bool:
+            if x not in checked_cache:
+                checked_cache[x] = pred(x)
+            return checked_cache[x]
 
-        deleted_count: int = 0
-        for left, right in reversed(intervals):
-            deleted_count += right - left
-            del self.numbers[left:right]
-
-        return deleted_count
+        initial_size = len(self.numbers)
+        self.numbers = SortedList(x for x in self.numbers if not _pred_cache(x))
+        return initial_size - len(self.numbers)
 
     def removeNumbersRange(self, minValue: int, maxValue: int)->int:
         #removes all numbers that >=min and <=max
