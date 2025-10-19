@@ -18,9 +18,11 @@ class NumberBox():
         #removes first occurrence of number and returns removed number or None if number missing
         #Time complexity is O(log(n))
         value: int | None = None
-        if num in self.numbers:
-            self.numbers.remove(num)
+        index = self.numbers.bisect_left(num)
+        if index < len(self.numbers) and self.numbers[index] == num:
+            del self.numbers[index]
             value = num
+
         return value
 
     def _index_range(self, min_value: int, max_value: int = None) -> tuple[int, int]:
@@ -45,7 +47,7 @@ class NumberBox():
                 checked_cache[x] = pred(x)
             return checked_cache[x]
 
-        initial_size = len(self.numbers)
+        initial_size: int = len(self.numbers)
         self.numbers = SortedList(x for x in self.numbers if not _pred_cache(x))
         return initial_size - len(self.numbers)
 
