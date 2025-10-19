@@ -25,6 +25,9 @@ class TestNumberBox(ut.TestCase):
         self.box.removeNumber(5)
         self.assertEqual(sorted(self.box), self.arr[:-1])
 
+    def test_unique_values(self):
+        self.assertEqual([1, 2, 3, 4, 5], list(self.box._unique_values()))
+
     def test_remove_numbers_predicate_partial(self):
         is_even = lambda x: x % 2 == 0
         self.assertEqual(self.box.removeNumbersPredicate(is_even), 6)
