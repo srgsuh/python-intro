@@ -13,26 +13,26 @@ class MyArray[T]:
         self._entries: dict[int, Entry[T]] = {}
         self._global: T | None = None
 
-    def _index_check(self, index: int):
+    def _index_check(self, index: int) -> None:
         if index < 0 or index >= self._size:
             raise IndexError(f"Index {index} out of range")
 
     def get(self, index: int) -> T:
         """Return the element at index."""
         self._index_check(index)
-        entry: Entry[T] = self._entries.get(index, None)
-        result = entry.value if entry and entry.updated_on >= self._tick else self._global
+        local: Entry[T] = self._entries.get(index, None)
+        result = local.value if local and local.updated_on >= self._tick else self._global
         if result is None:
             raise ValueError(f"Value at index {index} is not defined")
 
         return result
 
-    def set(self, index: int, value: T):
+    def set(self, index: int, value: T) -> None:
         """Set the element value at index."""
         self._index_check(index)
         self._entries[index] = Entry(value, self._tick)
 
-    def setAll(self, value: T):
+    def setAll(self, value: T) -> None:
         """Set value to all elements in the array."""
         self._tick += 1
         self._global = value
