@@ -14,7 +14,7 @@ class TestMyArray(ut.TestCase):
         self.assertRaises(IndexError, self.array.get, 1_000_000)
 
     def test_get_raise_when_value_is_not_set(self):
-        self.assertRaises(IndexError, self.empty.get, 1)
+        self.assertRaises(ValueError, self.empty.get, 1)
 
     def test_set_raise_when_index_out_of_range(self):
         self.assertRaises(IndexError, self.array.set, -1, 1)
@@ -38,3 +38,5 @@ class TestMyArray(ut.TestCase):
         values = [self.array.get(x) for x in [0, 1, 3, 1_000, 100_000, 99_999, 999_999]]
         self.assertEqual(values, [-1] * 7)
 
+if __name__ == '__main__':
+    ut.main()
