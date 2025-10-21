@@ -20,10 +20,8 @@ class MyArray[T]:
     def get(self, index: int) -> T:
         """Return the element at index."""
         self._index_check(index)
-        result = self._global if self._global else None
-        personal: Entry[T] = self._entries.get(index, None)
-        if personal and personal.updated_on >= self._tick:
-            result = personal.value
+        entry: Entry[T] = self._entries.get(index, None)
+        result = entry.value if entry and entry.updated_on >= self._tick else self._global
         if result is None:
             raise ValueError(f"Value at index {index} is not defined")
 
