@@ -26,6 +26,20 @@ class TestRandomNumberStream(ut.TestCase):
         self.__check_condition(lambda p: self.is_10_to_100(p) and self.is_even(p))
         values: list[int] = [x for x in it.islice(self.stream, self.test_limit)]
         self.assertEqual(10, len(values))
+    
+    def test_sport_lotto(self):
+        numbers = RandomNumbersStream(min=1, max=49)
+        numbers.setDistinct()
+        numbers.setLimit(10)
+        values: list[int] = [x for x in it.islice(numbers, self.test_limit)]
+        # Exactly 10 numbers generated
+        self.assertEqual(10, len(values)) 
+        # All numbers are distinct
+        sorted_values = sorted(values)
+        sorted_unique = [x for idx, x in enumerate(sorted_values) if idx == 0 or sorted_values[idx] > sorted_values[idx - 1]]
+        self.assertEqual(10, len(sorted_unique))
+        # All numbers are in the range from 1 to 49
+        self.assertTrue(all(x >= 1 and x <= 49 for x in values))
 
 if __name__ == "__main__":
     ut.main()
