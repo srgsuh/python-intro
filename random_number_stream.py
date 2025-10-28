@@ -19,8 +19,8 @@ class RandomStreamBuilder:
         self.stream = self.stream if callable is None else (v for v in self.stream if callable(v))
         return self
 
-    def limit(self, limit: int = 0) -> "RandomStreamBuilder":
-        self.stream = self.stream if not limit else it.islice(self.stream, limit)
+    def limit(self, max_values: int = 0) -> "RandomStreamBuilder":
+        self.stream = self.stream if not max_values else it.islice(self.stream, max_values)
         return self
     
     def unique(self, is_unique: bool = True) -> "RandomStreamBuilder":
@@ -34,11 +34,11 @@ class RandomNumbersStream:
     def __init__(self, min: int = -10 ** 20, max: int = 10 ** 20):
         if max < min:
             raise ValueError("max cannot be less then min")
-        self._max = max
-        self._min = min
-        self._limit = 0
+        self._max: int = max
+        self._min: int = min
+        self._limit: int = 0
         self._filter: Callable[[int], bool] | None = None
-        self._is_unique = False
+        self._is_unique: bool = False
     
     def setFilter(self, predicate: Callable[[int], bool]):
         self._filter = predicate
